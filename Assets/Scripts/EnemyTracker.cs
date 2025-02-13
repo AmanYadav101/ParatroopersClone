@@ -9,7 +9,7 @@ public class EnemyTracker : MonoBehaviour
 
     private List<GameObject> _leftEnemies = new List<GameObject>();
     private List<GameObject> _rightEnemies = new List<GameObject>();
-    private bool isClimbingStarted = false; // New flag to track if climbing has started
+    private bool isClimbingStarted = false; 
 
     private void Awake()
     {
@@ -25,10 +25,9 @@ public class EnemyTracker : MonoBehaviour
 
     public void AddEnemy(GameObject enemy)
     {
-        // If climbing has already started on either side, don't add new enemies
         if (isClimbingStarted)
         {
-            Destroy(enemy); // Or handle the enemy differently
+            Destroy(enemy);
             return;
         }
 
@@ -37,7 +36,7 @@ public class EnemyTracker : MonoBehaviour
             _leftEnemies.Add(enemy);
             if (_leftEnemies.Count == 4)
             {
-                isClimbingStarted = true; // Set the flag before starting climb
+                isClimbingStarted = true; 
                 StartClimbing(_leftEnemies);
             }
         }
@@ -46,7 +45,7 @@ public class EnemyTracker : MonoBehaviour
             _rightEnemies.Add(enemy);
             if (_rightEnemies.Count == 4)
             {
-                isClimbingStarted = true; // Set the flag before starting climb
+                isClimbingStarted = true; 
                 StartClimbing(_rightEnemies);
             }
         }
@@ -76,7 +75,6 @@ public class EnemyTracker : MonoBehaviour
 
     public bool CanDropEnemy(bool isLeftSide)
     {
-        // Don't allow dropping if climbing has started
         if (isClimbingStarted) return false;
 
         if (_leftEnemies.Count == 4 || _rightEnemies.Count == 4) return false;

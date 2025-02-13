@@ -4,26 +4,26 @@ namespace EnemyScripts
 {
     public class Enemy : MonoBehaviour
     {
-        public GameObject parachute; // Reference to the parachute GameObject
+        public GameObject parachute; 
         private Rigidbody2D _rigidbody;
         private float _velocity;
         private Camera _camera;
 
-        private readonly float _initialVelocity = 5f; // Fast fall speed
-        private readonly float _parachuteVelocity = 1f; // Slow fall speed
+        private readonly float _initialVelocity = 5f;
+        private readonly float _parachuteVelocity = 1f;
 
-        private bool _parachuteDeactivated = false; // Track if parachute is deactivated mid-air
+        private bool _parachuteDeactivated = false; 
         private bool _landed = false;
 
         private void Awake()
         {
-            _velocity = _initialVelocity; // Initialize with fast fall speed
+            _velocity = _initialVelocity; 
             _camera = Camera.main;
             _rigidbody = GetComponent<Rigidbody2D>();
 
             if (parachute)
             {
-                parachute.SetActive(false); // Ensure parachute is initially inactive
+                parachute.SetActive(false); 
             }
         }
 
@@ -49,18 +49,16 @@ namespace EnemyScripts
 
         private void ActivateParachute()
         {
-            _velocity = _parachuteVelocity; // Slow down fall
+            _velocity = _parachuteVelocity; 
             parachute.SetActive(true);
         }
 
         private void Land()
         {
-            _rigidbody.velocity = Vector2.zero; // Stop movement
+            _rigidbody.velocity = Vector2.zero; 
             _landed = true;
-            // Check if the parachute was active at any point during the fall
             if (_parachuteDeactivated)
             {
-                // Parachute was never active, so destroy the enemy
                 OnDeath();
             }
 

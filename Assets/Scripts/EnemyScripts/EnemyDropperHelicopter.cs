@@ -5,9 +5,9 @@ namespace EnemyScripts
 {
     public class EnemyDropperHelicopter : Helicopter
     {
-        public GameObject enemyPrefab; // Enemy prefab to drop
-        public Transform spawnPoint; // Point where enemies are dropped
-        public float dropInterval = 2f; // Time between enemy drops
+        public GameObject enemyPrefab; 
+        public Transform spawnPoint; 
+        public float dropInterval = 2f; 
 
         private float _nextDropTime;
 

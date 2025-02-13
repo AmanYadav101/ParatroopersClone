@@ -4,8 +4,8 @@ namespace EnemyScripts
 {
     public abstract class Helicopter : MonoBehaviour
     {
-        public float moveSpeed = 3f; // Speed of the helicopter
-        protected bool _movingRight; // Direction of movement
+        public float moveSpeed = 3f; 
+        protected bool _movingRight; 
         private Camera _camera;
         protected GameObject player;
 
@@ -38,7 +38,7 @@ namespace EnemyScripts
             Vector3 viewportPosition = _camera.WorldToViewportPoint(transform.position);
             if (viewportPosition.x < -0.1f || viewportPosition.x > 1.1f)
             {
-                Destroy(gameObject); // Destroy the helicopter if it goes out of bounds
+                Destroy(gameObject);
             }
         }
 
