@@ -11,6 +11,7 @@ namespace EnemyScripts
 
         private float _nextDropTime;
 
+        
         void Start()
         {
             _nextDropTime = Time.time + Random.Range(dropInterval, dropInterval + 2f);
@@ -26,15 +27,25 @@ namespace EnemyScripts
         {
             if (Time.time >= _nextDropTime)
             {
-                var isLeft = !_movingRight;
-                if (EnemyTracker.Instance.CanDropEnemy(isLeft))
+                if (EnemyTracker.Instance.CanDropEnemy(true))
                 {
-                    var enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-                    EnemyTracker.Instance.AddEnemy(enemy);
+                    if (CanSpawnEnemies())
+                    {
+                        var enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+                        EnemyTracker.Instance.AddEnemy(enemy);
+                        _nextDropTime = Time.time + dropInterval;
+                    }
                 }
-
-                _nextDropTime = Time.time + dropInterval;
             }
+        }
+
+        private bool CanSpawnEnemies()
+        {
+            Vector3 viewportPosition = Camera.main.WorldToViewportPoint(gameObject.transform.position);
+            bool isInsideViewport = viewportPosition.x is > 0 and < 1;
+            return (isInsideViewport) &&
+                   (gameObject.transform.position.x < EnemyTracker.Instance.turret.position.x - 1f ||
+                    gameObject.transform.position.x > EnemyTracker.Instance.turret.position.x + 1f);
         }
     }
 }

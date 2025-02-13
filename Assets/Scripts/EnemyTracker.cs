@@ -5,7 +5,7 @@ public class EnemyTracker : MonoBehaviour
 {
     public static EnemyTracker Instance; // Singleton instance for easy access
 
-    public Transform turret; // Reference to the turret
+    public  Transform turret; // Reference to the turret
 
     private List<GameObject> _leftEnemies = new List<GameObject>(); // Enemies on the left side
     private List<GameObject> _rightEnemies = new List<GameObject>(); // Enemies on the right side
@@ -30,7 +30,7 @@ public class EnemyTracker : MonoBehaviour
         {
             _leftEnemies.Add(enemy);
         }
-        else
+        else if(IsEnemyOnRightt(enemy))
         {
             _rightEnemies.Add(enemy);
         }
@@ -52,7 +52,11 @@ public class EnemyTracker : MonoBehaviour
     // Check if an enemy is on the left side of the turret
     private bool IsEnemyOnLeft(GameObject enemy)
     {
-        return enemy.transform.position.x < turret.position.x;
+        return enemy.transform.position.x < turret.position.x-0.6f;
+    }
+    private bool IsEnemyOnRightt(GameObject enemy)
+    {
+        return enemy.transform.position.x > turret.position.x + 0.6f;
     }
 
     // Check if a side has reached the maximum number of enemies

@@ -8,7 +8,7 @@ namespace EnemyScripts
         public GameObject enemyDropperHelicopterPrefab; // Assign the EnemyDropperHelicopter prefab
         public GameObject shootingHelicopterPrefab; // Assign the ShootingHelicopter prefab
         public float spawnInterval = 5f; // Time between helicopter spawns
-        private float spawnHeight;
+        private float _spawnHeight;
         public float spawnHeightLeft = 0.8f; // Y position as a percentage of the viewport height
         public float spawnHeightRight = 0.9f;
         private float _nextSpawnTime;
@@ -31,22 +31,25 @@ namespace EnemyScripts
         {
             bool spawnOnRight = Random.value > 0.5f;
 
-            spawnHeight = spawnOnRight ? spawnHeightRight : spawnHeightLeft;
-            Vector3 spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(
-                spawnOnRight ? 1.1f : -0.1f, // Slightly outside the viewport
-                spawnHeight, // Spawn at 80% of the screen height
-                0
-            ));
-            spawnPosition.z = 0; // Ensure Z is 0 for 2D
-
-            // Randomly choose between enemy-dropping and shooting helicopters
-            GameObject helicopterPrefab = Random.value > 0.5f ? enemyDropperHelicopterPrefab : shootingHelicopterPrefab;
-
-            GameObject helicopter = Instantiate(helicopterPrefab, spawnPosition, Quaternion.identity);
-            Helicopter helicopterScript = helicopter.GetComponent<Helicopter>();
-            if (helicopterScript != null)
+            _spawnHeight = spawnOnRight ? spawnHeightRight : spawnHeightLeft;
+            if (Camera.main)
             {
-                helicopterScript.SetDirection(!spawnOnRight);
+                Vector3 spawnPosition = Camera.main.ViewportToWorldPoint(new Vector3(
+                    spawnOnRight ? 1.1f : -0.1f, // Slightly outside the viewport
+                    _spawnHeight, // Spawn at 80% of the screen height
+                    0
+                ));
+                spawnPosition.z = 0; // Ensure Z is 0 for 2D
+
+                // Randomly choose between enemy-dropping and shooting helicopters
+                GameObject helicopterPrefab = Random.value > 0.5f ? enemyDropperHelicopterPrefab : shootingHelicopterPrefab;
+
+                GameObject helicopter = Instantiate(helicopterPrefab, spawnPosition, Quaternion.identity);
+                Helicopter helicopterScript = helicopter.GetComponent<Helicopter>();
+                if (helicopterScript != null)
+                {
+                    helicopterScript.SetDirection(!spawnOnRight);
+                }
             }
         }
     }
