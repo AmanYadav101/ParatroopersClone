@@ -66,6 +66,7 @@ namespace EnemyScripts
 
             else if (!_parachuteDeactivated || (parachute && parachute.activeInHierarchy))
             {
+                EnemyTracker.Instance.AddEnemy(gameObject);
                 parachute.SetActive(false);
             }
         }

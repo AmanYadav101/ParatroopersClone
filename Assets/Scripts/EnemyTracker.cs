@@ -1,18 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyTracker : MonoBehaviour
 {
-    public static EnemyTracker Instance; // Singleton instance for easy access
+    public static EnemyTracker Instance;
+    public Transform turret;
 
-    public  Transform turret; // Reference to the turret
-
-    private List<GameObject> _leftEnemies = new List<GameObject>(); // Enemies on the left side
-    private List<GameObject> _rightEnemies = new List<GameObject>(); // Enemies on the right side
+    private List<GameObject> _leftEnemies = new List<GameObject>();
+    private List<GameObject> _rightEnemies = new List<GameObject>();
+    private bool isClimbingStarted = false; // New flag to track if climbing has started
 
     private void Awake()
     {
-        // Singleton pattern
         if (Instance == null)
         {
             Instance = this;
@@ -23,20 +23,35 @@ public class EnemyTracker : MonoBehaviour
         }
     }
 
-    // Add an enemy to the tracker
     public void AddEnemy(GameObject enemy)
     {
+        // If climbing has already started on either side, don't add new enemies
+        if (isClimbingStarted)
+        {
+            Destroy(enemy); // Or handle the enemy differently
+            return;
+        }
+
         if (IsEnemyOnLeft(enemy))
         {
             _leftEnemies.Add(enemy);
+            if (_leftEnemies.Count == 4)
+            {
+                isClimbingStarted = true; // Set the flag before starting climb
+                StartClimbing(_leftEnemies);
+            }
         }
         else if(IsEnemyOnRightt(enemy))
         {
             _rightEnemies.Add(enemy);
+            if (_rightEnemies.Count == 4)
+            {
+                isClimbingStarted = true; // Set the flag before starting climb
+                StartClimbing(_rightEnemies);
+            }
         }
     }
 
-    // Remove an enemy from the tracker
     public void RemoveEnemy(GameObject enemy)
     {
         if (_leftEnemies.Contains(enemy))
@@ -49,19 +64,21 @@ public class EnemyTracker : MonoBehaviour
         }
     }
 
-    // Check if an enemy is on the left side of the turret
     private bool IsEnemyOnLeft(GameObject enemy)
     {
         return enemy.transform.position.x < turret.position.x-0.6f;
     }
+
     private bool IsEnemyOnRightt(GameObject enemy)
     {
         return enemy.transform.position.x > turret.position.x + 0.6f;
     }
 
-    // Check if a side has reached the maximum number of enemies
     public bool CanDropEnemy(bool isLeftSide)
     {
+        // Don't allow dropping if climbing has started
+        if (isClimbingStarted) return false;
+
         if (_leftEnemies.Count == 4 || _rightEnemies.Count == 4) return false;
         if (isLeftSide)
         {
@@ -70,6 +87,18 @@ public class EnemyTracker : MonoBehaviour
         else
         {
             return _rightEnemies.Count < 4;
+        }
+    }
+
+    private void StartClimbing(List<GameObject> enemies)
+    {
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            EnemyClimber climbing = enemies[i].GetComponent<EnemyClimber>();
+            if (climbing != null)
+            {
+                climbing.StartClimbing(i);
+            }
         }
     }
 }

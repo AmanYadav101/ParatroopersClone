@@ -348,6 +348,7 @@ GameObject:
   - component: {fileID: 5490759519237049863}
   - component: {fileID: 7881144868723785503}
   - component: {fileID: 2328025893440152360}
+  - component: {fileID: -4716113912877107411}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -461,6 +462,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parachute: {fileID: 6104848956474515335}
+--- !u!114 &-4716113912877107411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5449436936446727732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25cf5073b9aa464785e59b8454635854, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6104848956474515335
 GameObject:
   m_ObjectHideFlags: 0

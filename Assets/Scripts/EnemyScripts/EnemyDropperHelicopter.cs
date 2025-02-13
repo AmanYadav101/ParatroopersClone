@@ -11,7 +11,7 @@ namespace EnemyScripts
 
         private float _nextDropTime;
 
-        
+
         void Start()
         {
             _nextDropTime = Time.time + Random.Range(dropInterval, dropInterval + 2f);
@@ -32,11 +32,18 @@ namespace EnemyScripts
                     if (CanSpawnEnemies())
                     {
                         var enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-                        EnemyTracker.Instance.AddEnemy(enemy);
-                        _nextDropTime = Time.time + dropInterval;
+
                     }
                 }
+
+                _nextDropTime = Time.time + dropInterval;
             }
+        }
+
+        private bool IsAtBottomViewport(GameObject enemy)
+        {
+            Vector3 viewportPosition = Camera.main.WorldToViewportPoint(enemy.transform.position);
+            return viewportPosition.y < 0.027f;
         }
 
         private bool CanSpawnEnemies()
