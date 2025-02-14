@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class EnemyClimber : MonoBehaviour
 {
+    
     public float climbSpeed = 2f;
-    private bool isClimbing = false;
     private Vector3 targetPosition;
     private Transform turret;
     private bool isInFormation = false;
@@ -21,7 +22,6 @@ public class EnemyClimber : MonoBehaviour
     public void StartClimbing(int position)
     {
         positionInFormation = position;
-        isClimbing = true;
 
         if (position < 3) 
         {
@@ -43,12 +43,12 @@ public class EnemyClimber : MonoBehaviour
         switch (positionInFormation)
         {
             case 0: 
-                targetPosition = basePosition + new Vector3(0, ENEMY_HEIGHT / 1.5f, 0);
-                break;
+                targetPosition = basePosition;
+                                break;
 
             case 1: 
-                targetPosition = basePosition;
-                break;
+                targetPosition = basePosition + new Vector3(0, ENEMY_HEIGHT / 1.5f, 0);
+                                break;
             case 2: 
                 targetPosition = basePosition + new Vector3(
                     isLeftSide ? -ENEMY_WIDTH : ENEMY_WIDTH, 
@@ -91,7 +91,7 @@ public class EnemyClimber : MonoBehaviour
         float progress = 0;
         while (progress < 1)
         {
-            progress += Time.deltaTime * climbSpeed;
+            progress += Time.deltaTime * climbSpeed*2;
         
             Vector3 currentPos = Vector3.Lerp(startPos, endPoint, progress);
             float heightOffset = Mathf.Sin(progress * Mathf.PI) * ENEMY_HEIGHT;
@@ -102,7 +102,10 @@ public class EnemyClimber : MonoBehaviour
 
         if (turret != null)
         {
+            
             Destroy(turret.gameObject);
+            
+            SceneManager.LoadScene("MainMenu");
         }
     }
     private bool AreOthersInFormation()
